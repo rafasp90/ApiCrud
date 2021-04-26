@@ -36,6 +36,14 @@ namespace ApiCrud
             services.AddScoped<IPessoaService, PessoaService>();
             services.AddScoped<IPessoaApp, PessoaApp>();
 
+            services.AddCors(
+                options => options.AddPolicy("Allow",
+                builder => {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                }));
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -46,6 +54,8 @@ namespace ApiCrud
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("Allow");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
